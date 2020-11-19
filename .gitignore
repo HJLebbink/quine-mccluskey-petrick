@@ -33,3 +33,7 @@
 
 # compressed files
 *.zip
+/.vs/*
+/x64/Debug/**
+/x64/Release/**
+/qmp.vcxproj.user

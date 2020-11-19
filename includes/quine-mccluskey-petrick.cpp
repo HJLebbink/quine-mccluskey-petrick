@@ -257,17 +257,27 @@ string simplify(unordered_map<string, Binary> unchecked, vector<uint> dontcare, 
                 {
                 case 1:
                 {
-                    primeimp_table[mt.first].erase(primeimp_table[mt.first].begin() + bin2);
+                    // delete b
+                    if ((bin2 < 0) || (bin2 >= primeimp_table[mt.first].size())) {
+                        std::cout << "ERROR: 867b29df: invalid index " << bin2 << std::endl;
+                    }
+                    else {
+                        primeimp_table[mt.first].erase(primeimp_table[mt.first].begin() + bin2);
+                    }
                     // mt.second.erase(mt.second.begin() + bin2);
                     unchecked.erase(b.getbins());
                     things_deleted = true;
-                    // delete b
                 }
                 break;
                 case -1:
                 {
                     // delete a
-                    primeimp_table[mt.first].erase(primeimp_table[mt.first].begin() + bin1);
+                    if ((bin1 < 0) || (bin1 >= primeimp_table[mt.first].size())) {
+                        std::cout << "ERROR: b273b2e1: invalid index " << bin1 << std::endl;
+                    }
+                    else {
+                        primeimp_table[mt.first].erase(primeimp_table[mt.first].begin() + bin1);
+                    }
                     // mt.second.erase(mt.second.begin() + bin1);
                     unchecked.erase(a.getbins());
                     things_deleted = true;
@@ -455,6 +465,8 @@ void PBinary::operator+=(const PBinary &rhs)
 void PBinary::simplify()
 {
     // clear unnecessary expression using boolean identity
+    std::vector<std::string> to_delete;
+    
     for (auto pair1 : this->pbins)
     {
         for (auto pair2 : this->pbins)
@@ -464,10 +476,13 @@ void PBinary::simplify()
                 if (isdeletable(pair1.first, pair2.first))
                 {
                     // delete the second
-                    this->pbins.erase(pair2.first);
+                    to_delete.push_back(pair2.first);
                 }
             }
         }
+    }
+    for (const std::string& x : to_delete) {
+        this->pbins.erase(x);
     }
 }
 
